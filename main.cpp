@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <vector>
 #include <time.h>
 #include <cstdlib>
 #include <bits/stdc++.h>
@@ -26,16 +25,6 @@ LinkedList* convertirLista(string palabra){
     l1->add_at_head(palabra[i]);
   }
   return l1;
-}
-
-char convertirString(string s){
-  char p[s.length()];
-  int i;
-  for (i = 0; i < sizeof(p); i++) {
-    p[i] = s[i];
-    cout << p[i];
-    }
-return 0;
 }
 
 string diccionario[] = {"COSTA", "GORRA", "BOLSA", "BALON", "LISTA", "PERRO", "ARROZ", "PALMA", "ARBOL", "PLAYA", "GATO"};
@@ -93,7 +82,7 @@ int opcion;
 cin >> opcion;
 LinkedList *LLI;
   if(opcion == 1){ //se ejecuta el programa
-    cout << "La palabra a adivinar tiene" << solucion.length()<< " letras..." << endl;
+    cout << "La palabra a adivinar tiene " << solucion.length()<< " letras..." << endl;
     cout << "Tienes 6 intentos para adivinarla" << endl;
     string palabra;
     for(int i=0; i<6 ; i++){//intentos del usuario
