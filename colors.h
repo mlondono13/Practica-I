@@ -7,6 +7,9 @@ namespace Color{
     FG_YELLOW = 33,
     FG_WHITE = 37,
     FG_DEFAULT = 39,
+    FG_CYAN = 36,
+    FG_BLUE = 94,
+    FG_RED = 91
   };
 class Modifier{
   Code code;
