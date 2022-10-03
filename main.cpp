@@ -6,8 +6,6 @@
 #include "colors.h"
 #include "Node.h"
 #include <string.h>
-#include <list>
-#include <iterator>
 using namespace std;
 
 string aMayuscula(string cadena) {
@@ -20,6 +18,9 @@ string aMayuscula(string cadena) {
 Color::Modifier green(Color::FG_GREEN);
 Color::Modifier yellow(Color::FG_YELLOW);
 Color::Modifier def(Color::FG_DEFAULT);
+Color::Modifier cyan(Color::FG_CYAN);
+Color::Modifier blue(Color::FG_BLUE);
+Color::Modifier red(Color::FG_RED);
 
 Node* convertirLista(string palabra){
   Node* head = new Node(palabra[0]);
@@ -51,6 +52,27 @@ void reset(Node* LLI){
     LLI = LLI->next;
   }
 }
+void comparar2(Node* LLPhead, Node* LLIhead){
+  Node* llp2 = LLPhead;
+  Node* lli2 = LLIhead;
+  int i = 0;
+  int j = 0;
+  while(lli2){
+    i = 0;
+    llp2 = llp2;
+    while(llp2){
+      if(lli2->value == llp2->value){
+        if (i!=j){
+          lli2->color = "yellow";
+          }
+        }
+      llp2 = llp2->next;
+      i++;
+    }
+    lli2 = lli2->next;
+    j++;
+  }
+}
 
 void comparar(Node* LLPhead, Node* LLIhead){
   Node* llp = LLPhead;
@@ -62,59 +84,56 @@ void comparar(Node* LLPhead, Node* LLIhead){
     llp = llp;
     while(llp != NULL){
       if(lli->value == llp->value){
-        if (j==i){
-          lli->color = "green";
-          break;
+        if (i!=j){
+          comparar2(llp, lli);
         }else{
-          lli->color = "yellow";
+          lli->color = "green";
         }
+       
       }
       llp = llp->next;
       i++;
+      lli = lli->next;
+      j++;
     }
-    lli = lli->next;
-    j++;
+    
+    
   }
 }
 
 bool imprimirColor(Node* LLI, Node* LLP){
   Node* lli = LLI;
   while(lli != NULL){
-    if(lli->color == "green"){
-      cout<<green<<lli->value<<def;
-    }else if (lli->color == "yellow"){
+    if(lli->color == "yellow"){
       cout<<yellow<<lli->value<<def;
+    }else if (lli->color == "green"){
+      cout<<green<<lli->value<<def;
     }else{
       cout<<lli->value;
     }
     lli = lli->next;
   }
   if(LLI == LLP){
-    cout << "Ganaste!" << endl;
+    cout << red << " ¡Ganaste! " << def << endl;
     return true;
   }else{
     return false;
   }
 }
-/*bool verificarGanar(Node* LLP, Node* LLI){
-  Node* llp = LLP;
-  Node* lli = LLI;
-  
-}*/
 
 
 int main(){
   string solucion = palabraAleatoria(diccionario);
   Node* LLP = convertirLista(solucion);  
-  cout << "Bienvenido a Wordle" << endl;
-  cout << "Inserta 1 para jugar o 0 para salir" << endl;
+  cout << cyan << "  ¡Bienvenido a Wordle!" << def << endl;
+  cout << blue << "Inserta 1 para jugar o 0 para salir" << def<< endl;
   int opcion;
   cin >> opcion;
   Node* LLI;
   bool verificar;
   if(opcion == 1){ //se ejecuta el programa
-    cout << "La palabra a adivinar tiene " << solucion.length()<< " letras..." << endl;
-    cout << "Tienes 6 intentos para adivinarla" << endl;
+    cout << blue << "La palabra a adivinar tiene " << red << solucion.length()<< blue << " letras..." << def << endl;
+    cout << blue << "  Tienes 6 intentos para adivinarla" << def <<endl;
     string palabra;
     int intentos;
     for(intentos=0; intentos<6 ; intentos++){//intentos del usuario
@@ -123,25 +142,32 @@ int main(){
       palabra = aMayuscula(palabra);
       LLI = convertirLista(palabra);
       if(palabra.length() == solucion.length()){
-        comparar(LLP, LLI);
-        verificar = imprimirColor(LLI, LLP);
-        reset(LLI);
-        if(verificar == true){
+        if (palabra==solucion){
+          intentos = 6;
           break;
+        }else{
+          comparar(LLP, LLI);
+          verificar = imprimirColor(LLI, LLP);
+          reset(LLI);
+          if(verificar == true){
+            break;
+          }
         }
       }else{
         cout << "¡Ingresa una palabra con " << solucion.length() << " letras!" << endl;
         intentos--;
       }
        
-    } if(intentos == 6){
+    } if(intentos <= 6 && palabra != solucion){
        cout<<"\nUps...sigue intentando"<<endl;
-       cout<<"La palabra correcta es: "<<green<<solucion<<endl;
+       cout<<"La palabra correcta es:"<<green<<solucion<<endl;
+      } else {
+      cout<< red << "  ¡Ganaste!" << def;
       } 
     }
     
   else if(opcion == 0){
-    cout<<"Hasta pronto!";
+    cout << cyan << "Hasta pronto!" << def;
     exit(opcion);  
   }
 } 
